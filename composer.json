@@ -1,5 +1,5 @@
 {
-    "name":         "tavs/datatable",
+    "name":         "tsantos/datatable",
     "type":         "library",
     "description":  "PHP API to handler DataTables",
     "keywords":     ["grid", "datatable"],
