@@ -1,0 +1,25 @@
+{
+    "name":         "tavs/datatable",
+    "type":         "library",
+    "description":  "PHP API to handler DataTables",
+    "keywords":     ["grid", "datatable"],
+    "license":      "MIT",
+    "authors":      [
+        {
+            "name":     "Tales Santos"
+        }
+    ],
+    "require":      {
+        "php":  ">=5.4.0",
+        "twig/twig": "1.16.*@dev",
+        "symfony/event-dispatcher" : "2.*",
+        "symfony/options-resolver" : "2.*",
+        "symfony/property-access"  : "2.*",
+        "symfony/http-foundation"  : "2.*",
+        "doctrine/orm": "2.4.*@dev"
+    },
+    "autoload": {
+        "psr-0": { "Tavs\\DataTable\\": "../src/" }
+    },
+    "minimum-stability": "dev"
+}
