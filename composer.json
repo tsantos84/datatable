@@ -1,7 +1,7 @@
 {
     "name":         "tsantos/datatable",
     "type":         "library",
-    "description":  "PHP API to handler DataTables",
+    "description":  "PHP API to handle DataTables",
     "keywords":     ["grid", "datatable"],
     "license":      "MIT",
     "authors":      [
