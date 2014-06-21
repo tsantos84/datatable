@@ -8,6 +8,7 @@ $dataTable = $factory->createBuilder()
     ->add('id', 'text')
     ->add('name', 'text')
     ->add('email', 'email')
+    ->add('created_at', 'date_time')
     ->add('active', 'checkbox')
     ->getDataTable();
 

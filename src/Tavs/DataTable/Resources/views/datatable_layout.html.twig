@@ -1,0 +1,81 @@
+{% block widget_attributes %}
+{% spaceless %}
+    {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+{% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block datatable_head %}
+{% spaceless %}
+    <thead>
+        <tr class="heading">
+            {% for column in datatable %}
+                {{ block('datatable_column') }}
+            {% endfor %}
+        </tr>
+    </thead>
+{% endspaceless %}
+{% endblock %}
+
+{% block datatable_column %}
+{% spaceless %}
+    <th>
+        {{ column.title|raw }}
+    </th>
+{% endspaceless %}
+{% endblock %}
+
+{% block datatable_body %}
+{% spaceless %}
+    <tbody>
+        {% for record in datatable.datasource %}
+            {{ block('datatable_row') }}
+        {% endfor %}
+    </tbody>
+{% endspaceless %}
+{% endblock %}
+
+{% block datatable_row %}
+{% spaceless %}
+    <tr>
+    {% for column in datatable.columns %}
+        {{ block('datatable_cel') }}
+    {% endfor %}
+    </tr>
+{% endspaceless %}
+{% endblock %}
+
+{% block datatable_cel %}
+{% spaceless %}
+    <td class="text-{{ column.align|default('left') }}">
+        {{ datatable_column_widget(column, record) }}
+    </td>
+{% endspaceless %}
+{% endblock %}
+
+{# ===== COLUMNS WIDGETS ===== #}
+
+{% block column_text %}
+{{ value }}
+{% endblock %}
+
+{% block column_email %}
+<i class="fa fa-envelope"></i> <a href="mailto:{{ value }}">{{ value }}</a>
+{% endblock %}
+
+{% block column_checkbox %}
+<input type="checkbox" {{ block('widget_attributes') }} name="{{ name }}[]" {{ value ? 'checked="checked"' }} />
+{% endblock %}
+
+{% block column_date_time %}
+{% spaceless %}
+    {{ value|date(format) }}
+{% endspaceless %}
+{% endblock %}
+
+{% block column_actions %}
+{% spaceless %}
+    {% set identifier = datatable_record_identifier(datatable, record) %}
+    <a href="{{ edit_url|replace(identifier) }}">{{ edit_label }}</a> -
+    <a href="{{ remove_url|replace(identifier) }}">{{ remove_label }}</a>
+{% endspaceless %}
+{% endblock %}
