@@ -39,9 +39,12 @@ class DataTableFactory implements DataTableFactoryInterface
     /**
      * @inheritdoc
      */
-    public function createBuilder(array $options = array())
+    public function createBuilder(DataTableTypeInterface $type = null, array $options = array())
     {
-        $type = new DataTableType();
+        if (null === $type) {
+            $type = new DataTableType();
+        }
+
         $resolver = new OptionsResolver();
         $type->setDefaultOptions($resolver);
 
@@ -52,34 +55,30 @@ class DataTableFactory implements DataTableFactoryInterface
     /**
      * @inheritdoc
      */
-    public function createDataTable($type, $dataSource = null, array $options = array())
+    public function createDataTable($type, $dataSource = null, array $options = [])
     {
         if (is_string($type)) {
             $type = $this->registry->getDataTableType($type);
         }
 
-        $builder = $this->createBuilder();
-
         if (!$type instanceof DataTableTypeInterface) {
             throw new \InvalidArgumentException('$type should be instance of Tavs\DataTable\DataTableTypeInterface');
         }
 
-        $resolver = new OptionsResolver();
-        $type->setDefaultOptions($resolver);
-        $options = $resolver->resolve($options);
-
         // build the datatable's columns
+        $builder = $this->createBuilder($type, $options);
+        $options = $builder->getOptions();
         $type->buildDataTable($builder, $options);
 
         // build the datatable
         $dataTable = $builder->getDataTable();
         $dataTable->setOptions($options);
+        $dataTable->setType($type);
 
         if (null !== $dataSource) {
             $dataSource = $this->createDataSource($dataSource);
             $dataTable->setDataSource($dataSource);
         }
-
 
         return $dataTable;
     }

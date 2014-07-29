@@ -139,7 +139,7 @@ class DataTableExtension extends \Twig_Extension
      * @param Request $request
      * @return JsonResponse
      */
-    public function renderAjaxResponse(DataTableView $view, Request $request)
+    public function getDataTableResponse(DataTableView $view, Request $request)
     {
         $params = $request->isMethod('post')
             ? $request->request
@@ -163,7 +163,7 @@ class DataTableExtension extends \Twig_Extension
             $json['data'][] = $row;
         }
 
-        return new JsonResponse($json);
+        return $json;
     }
 
     /**
@@ -171,22 +171,20 @@ class DataTableExtension extends \Twig_Extension
      * @param array $extra
      * @return string
      */
-    public function renderOptions(DataTableView $view, array $extra = array())
+    public function renderOptions(DataTableView $view, array $extra = [])
     {
-        $options = array_merge(array(
-            'columns' => array()
-        ), $extra);
+        $options = array_merge(['columns' => []], $view['config']->vars, $extra);
 
         foreach ($view->columns as $column) {
 
-            $c = array(
+            $c = [
                 'title' => $column['title'],
                 'searchable' => $column['searchable'],
                 'orderable' => $column['orderable'],
                 'visible' => $column['visible'],
                 'name' => $column['name'],
                 'className' => $column['class_name']
-            );
+            ];
 
             $options['columns'][] = $c;
         }
@@ -211,7 +209,7 @@ class DataTableExtension extends \Twig_Extension
                 $path = sprintf('[%s]', $name);
             }
 
-            $identifier['{'.$name.'}'] = $this->accessor->getValue($record, $path);
+            $identifier[$name] = $this->accessor->getValue($record, $path);
         }
 
         return $identifier;
@@ -248,11 +246,6 @@ class DataTableExtension extends \Twig_Extension
     private function renderBlock($block, array $view)
     {
         $template = $this->getTemplate();
-
-        if ($template->hasBlock($block)) {
-            return $template->renderBlock($block, $view);
-        }
-
-        throw new \InvalidArgumentException('the block "'.$block.'" does not exists');
+        return $template->renderBlock($block, $view);
     }
 }

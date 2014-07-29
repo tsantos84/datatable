@@ -54,6 +54,16 @@ interface DataTableInterface extends \Countable, \IteratorAggregate
     public function remove($name);
 
     /**
+     * @param \Tavs\DataTable\DataTableTypeInterface $type
+     */
+    public function setType($type);
+
+    /**
+     * @return \Tavs\DataTable\DataTableTypeInterface
+     */
+    public function getType();
+
+    /**
      * @return DataTableView
      */
     public function createView();

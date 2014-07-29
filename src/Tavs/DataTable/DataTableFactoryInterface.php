@@ -15,10 +15,11 @@ interface DataTableFactoryInterface
     public function getRegistry();
 
     /**
+     * @param DataTableTypeInterface $type
      * @param array $options
-     * @return DataTableBuilderInterface
+     * @return mixed
      */
-    public function createBuilder(array $options = array());
+    public function createBuilder(DataTableTypeInterface $type = null, array $options = array());
 
     /**
      * @param string|DataTableTypeInterface $type

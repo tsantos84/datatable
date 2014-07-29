@@ -82,7 +82,7 @@ class TextColumnType extends AbstractColumnType
         ));
 
         if (null !== $options['align']) {
-            $view['class_name'] .= ' ' . $options['align'];
+            $view['class_name'] .= ' text-' . $options['align'];
         }
 
         $view['class_name'] = trim($view['class_name']);

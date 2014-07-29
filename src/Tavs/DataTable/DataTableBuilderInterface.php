@@ -38,4 +38,14 @@ interface DataTableBuilderInterface extends \IteratorAggregate
      * @return DataTableBuilderInterface
      */
     public function remove($name);
+
+    /**
+     * @param array $options
+     */
+    public function setOptions($options);
+
+    /**
+     * @return array
+     */
+    public function getOptions();
 }

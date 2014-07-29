@@ -4,7 +4,6 @@ namespace Tavs\DataTable;
 
 use Tavs\DataTable\Exception\ColumnNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class DataTableBuilder
@@ -118,6 +117,22 @@ class DataTableBuilder implements DataTableBuilderInterface
         }
 
         return $dataTable;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**

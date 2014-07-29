@@ -117,6 +117,22 @@ class DataTable implements DataTableInterface
     }
 
     /**
+     * @param \Tavs\DataTable\DataTableTypeInterface $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return \Tavs\DataTable\DataTableTypeInterface
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @param DataSourceInterface $datasource
      * @return $this
      */
