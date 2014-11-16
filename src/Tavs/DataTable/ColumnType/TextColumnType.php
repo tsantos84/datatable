@@ -41,8 +41,8 @@ class TextColumnType extends AbstractColumnType
             'orderable' => 'bool',
             'width' => array('null', 'int'),
             'visible' => 'bool',
-            'title' => 'string',
-            'property_path' => 'string',
+            'title' => ['null', 'string'],
+            'property_path' => ['null', 'string'],
             'mapped' => 'bool',
             'entity_alias' => array('null', 'string'),
             'extra_column' => 'bool'
@@ -53,10 +53,10 @@ class TextColumnType extends AbstractColumnType
         ));
 
         $resolver->setNormalizers(array(
-            'title' => function(Options $options, $value) {
+            'title' => function (Options $options, $value) {
                 return null === $value ? trim(ucwords(preg_replace('/[\._]/', ' ', $options['name']))) : $value;
             },
-            'property_path' => function(Options $options, $value) {
+            'property_path' => function (Options $options, $value) {
                 return null === $value ? strtolower($options['name']) : $value;
             }
         ));
