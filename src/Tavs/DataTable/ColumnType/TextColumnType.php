@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class TextColumnType
+ *
  * @package Tavs\DataTable\ColumnType
  */
 class TextColumnType extends AbstractColumnType
@@ -18,48 +19,48 @@ class TextColumnType extends AbstractColumnType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'block_name' => 'column_text',
-            'align' => 'left',
-            'class_name' => '',
-            'searchable' => false,
-            'orderable' => false,
-            'width' => null,
-            'visible' => true,
-            'title' => null,
+        $resolver->setDefaults([
+            'block_name'    => 'column_text',
+            'align'         => 'left',
+            'class_name'    => '',
+            'searchable'    => false,
+            'orderable'     => false,
+            'width'         => null,
+            'visible'       => true,
+            'title'         => null,
             'property_path' => null,
-            'mapped' => true,
-            'entity_alias' => null,
-            'extra_column' => false
-        ));
+            'mapped'        => true,
+            'entity_alias'  => null,
+            'extra_column'  => false
+        ]);
 
-        $resolver->setAllowedTypes(array(
-            'block_name' => 'string',
-            'align' => 'string',
-            'class_name' => 'string',
-            'searchable' => 'bool',
-            'orderable' => 'bool',
-            'width' => array('null', 'int'),
-            'visible' => 'bool',
-            'title' => ['null', 'string'],
+        $resolver->setAllowedTypes([
+            'block_name'    => 'string',
+            'align'         => 'string',
+            'class_name'    => 'string',
+            'searchable'    => 'bool',
+            'orderable'     => 'bool',
+            'width'         => ['null', 'int'],
+            'visible'       => 'bool',
+            'title'         => ['null', 'string'],
             'property_path' => ['null', 'string'],
-            'mapped' => 'bool',
-            'entity_alias' => array('null', 'string'),
-            'extra_column' => 'bool'
-        ));
+            'mapped'        => 'bool',
+            'entity_alias'  => ['null', 'string'],
+            'extra_column'  => 'bool'
+        ]);
 
-        $resolver->setRequired(array(
+        $resolver->setRequired([
             'name'
-        ));
+        ]);
 
-        $resolver->setNormalizers(array(
-            'title' => function (Options $options, $value) {
+        $resolver->setNormalizers([
+            'title'         => function (Options $options, $value) {
                 return null === $value ? trim(ucwords(preg_replace('/[\._]/', ' ', $options['name']))) : $value;
             },
             'property_path' => function (Options $options, $value) {
                 return null === $value ? strtolower($options['name']) : $value;
             }
-        ));
+        ]);
     }
 
     /**
@@ -67,19 +68,19 @@ class TextColumnType extends AbstractColumnType
      */
     public function buildView(ColumnView $view, DataTableView $dataTableView, array $options)
     {
-        $view->vars = array_replace($view->vars, array(
-            'datatable' => $dataTableView,
-            'name' => $options['name'],
-            'title' => $options['title'],
-            'visible' => $options['visible'],
-            'orderable' => $options['orderable'],
+        $view->vars = array_replace($view->vars, [
+            'datatable'     => $dataTableView,
+            'name'          => $options['name'],
+            'title'         => $options['title'],
+            'visible'       => $options['visible'],
+            'orderable'     => $options['orderable'],
             'property_path' => $options['property_path'],
-            'mapped' => $options['mapped'],
-            'block_name' => $options['block_name'],
-            'searchable' => $options['searchable'],
-            'class_name' => $options['class_name'],
-            'extra_column' => $options['extra_column']
-        ));
+            'mapped'        => $options['mapped'],
+            'block_name'    => $options['block_name'],
+            'searchable'    => $options['searchable'],
+            'class_name'    => $options['class_name'],
+            'extra_column'  => $options['extra_column']
+        ]);
 
         if (null !== $options['align']) {
             $view['class_name'] .= ' text-' . $options['align'];
