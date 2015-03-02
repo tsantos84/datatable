@@ -266,9 +266,57 @@ class Parser
         ];
     }
 
+    /**
+     * @param $criteria
+     * @param $excluded
+     * @param $valueModifier
+     */
     private function dateValue(&$criteria, $excluded, $valueModifier)
     {
+        // Case 1: No modifier before nor after
+        // Case 2: Modifier only after           (28/11/1984..)
+        // Case 3: Modifier only before          (..28/11/1984)
+        // case 4: Modifier as a value separator (02/10/1984..28/11/1984)
 
+        $numericalToken = $this->lexer->lookahead;
+        $value = sprintf("'%s'", $numericalToken['value']);
+        $expr = $excluded ? self::OP_NOT_EQUAL : self::OP_EQUAL;
+
+        if (null == $valueModifier) {
+
+            // moves to next token
+            $this->lexer->moveNext();
+
+            // Case 2 or 4
+            if ($this->lexer->isNextToken(Lexer::T_RANGE)) {
+
+                $this->match(Lexer::T_RANGE);
+
+                // Case 4
+                if ($this->lexer->isNextToken(Lexer::T_DATE)) {
+                    $value = [$value, sprintf("'%s'", $this->lexer->lookahead['value'])];
+                    $expr = self::OP_BETWEEN;
+                    $this->lexer->moveNext();
+                } else {
+                    // Case 2
+                    $expr = self::OP_GREATER_THAN;
+                }
+
+            }
+
+        } else { // Case 3
+            $expr = self::OP_LESS_THAN;
+            $this->lexer->moveNext();
+        }
+
+        $criteria['field'] = sprintf('DATE(%s)', $criteria['field']);
+
+        // the expression
+        $criteria['expressions'][] = [
+            'val'  => $value,
+            'expr' => $expr,
+            'connector' => $excluded ? self::OP_AND : self::OP_OR
+        ];
     }
 
     /**

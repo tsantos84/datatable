@@ -153,9 +153,14 @@ class Lexer extends AbstractLexer
 
             // Recognize quoted strings
             case ($value[0] === '"'):
+
                 $value = str_replace('""', '"', substr($value, 1, strlen($value) - 2));
 
-                return self::T_STRING;
+                if ($type = $this->recognizeDate($value)) {
+                    return $type;
+                } else {
+                    return self::T_STRING;
+                }
 
             // Recognize true values
             case ('true' === strtolower($value)):
@@ -197,9 +202,22 @@ class Lexer extends AbstractLexer
         return $type;
     }
 
+    /**
+     * @param $value
+     */
     private function recognizeDate(&$value)
     {
+        if (false === ($date = \DateTime::createFromFormat('d/m/Y', $value))) {
+            try {
+                $date = new \DateTime($value);
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
 
+        if ($date instanceof \DateTime) {
+            $value = $date->format('Y-m-d');
+            return self::T_DATE;
+        }
     }
-
 }
