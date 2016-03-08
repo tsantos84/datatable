@@ -15,7 +15,7 @@ use Twig_Environment;
  * Class DataTableExtension
  * @package Tavs\DataTable\Twig\Extension
  */
-class DataTableExtension extends \Twig_Extension
+class DataTableExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
     /**
      * @var string
